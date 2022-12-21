@@ -7,7 +7,7 @@ from tkinter import filedialog
 
 #creating the root window 
 root=Tk()
-root.title('DataFlair Python MP3 Music player App ')
+root.title('Music app')
 #initialize mixer 
 mixer.init()
 
@@ -19,32 +19,32 @@ songs_list.grid(columnspan=9)
 defined_font = font.Font(family='Helvetica')
 
 #play button
-play_button=Button(root,text="Play",width =7,command=Play)
+play_button=Button(root,text="Play",width =7,command=print("play"))
 play_button['font']=defined_font
 play_button.grid(row=1,column=0)
 
 #pause button 
-pause_button=Button(root,text="Pause",width =7,command=Pause)
+pause_button=Button(root,text="Pause",width =7,command=print("pause"))
 pause_button['font']=defined_font
 pause_button.grid(row=1,column=1)
 
 #stop button
-stop_button=Button(root,text="Stop",width =7,command=Stop)
+stop_button=Button(root,text="Stop",width =7,command=print("stop"))
 stop_button['font']=defined_font
 stop_button.grid(row=1,column=2)
 
 #resume button
-Resume_button=Button(root,text="Resume",width =7,command=Resume)
+Resume_button=Button(root,text="Resume",width =7,command=print("resume"))
 Resume_button['font']=defined_font
 Resume_button.grid(row=1,column=3)
 
 #previous button
-previous_button=Button(root,text="Prev",width =7,command=Previous)
+previous_button=Button(root,text="Prev",width =7,command=print("previous"))
 previous_button['font']=defined_font
 previous_button.grid(row=1,column=4)
 
 #nextbutton
-next_button=Button(root,text="Next",width =7,command=Next)
+next_button=Button(root,text="Next",width =7,command=print("next"))
 next_button['font']=defined_font
 next_button.grid(row=1,column=5)
 
@@ -53,8 +53,8 @@ my_menu=Menu(root)
 root.config(menu=my_menu)
 add_song_menu=Menu(my_menu)
 my_menu.add_cascade(label="Menu",menu=add_song_menu)
-add_song_menu.add_command(label="Add songs",command=addsongs)
-add_song_menu.add_command(label="Delete song",command=deletesong)
+add_song_menu.add_command(label="Add songs",command=print("add song"))
+add_song_menu.add_command(label="Delete song",command=print("delete song"))
 
 
 mainloop()
