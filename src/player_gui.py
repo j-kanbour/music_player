@@ -1,6 +1,7 @@
 #importing libraries 
 #need to work on function
 from pygame import mixer
+import pygame
 from tkinter import *
 import tkinter.font as font
 from tkinter import filedialog
@@ -56,6 +57,5 @@ add_song_menu=Menu(my_menu)
 my_menu.add_cascade(label="Menu",menu=add_song_menu)
 add_song_menu.add_command(label="Add songs",command=song.addsongs(songs_list))
 add_song_menu.add_command(label="Delete song",command=song.deletesong(songs_list))
-
 
 mainloop()

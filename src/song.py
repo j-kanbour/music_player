@@ -1,27 +1,38 @@
 from pygame import mixer
-from tkinter import *
-import tkinter.font as font
+# from tkinter import *
+# import tkinter.font as font
 from tkinter import filedialog
+import shutil, os
 
-#add many songs to the playlist of python mp3 player
-def addsongs(songs_list):
+#add song(s) to main library
+#use oo
+def addsongs():
     #to open a file  
     temp_song=filedialog.askopenfilenames(initialdir="Music/",title="Choose a song", filetypes=(("mp3 Files","*.mp3"),))
     ##loop through every item in the list to insert in the listbox
-    for s in temp_song:
-        s=s.replace("C:/Users/DataFlair/python-mp3-music-player/","")
-        songs_list.insert(END,s)
-     
-def deletesong(songs_list):
-    curr_song=songs_list.curselection()
-    songs_list.delete(curr_song[0])
+    for i in temp_song:
+        shutil.copy(i, "src\main_list")
+
+# delete song from main library
+#use oo 
+def deletesong(song):
+    if os.path.exists(song):
+        os.remove(song)
+    else:
+        print("The file does not exist")
     
     
-def Play(songs_list):
-    song=songs_list.get(ACTIVE)
-    song=f'C:/Users/lenovo/Desktop/DataFlair/Notepad/Music/{song}'
+def Play(song):
+    mixer.init()
     mixer.music.load(song)
-    mixer.music.play()
+    mixer.music.play() #meeds some while loop to play
+    while True:
+        if mixer.music.get_endevent() == 1:
+            break
+
+
+Play('src/main_list/05. Umbrella.mp3')
+
 
 #to pause the song 
 def Pause():
