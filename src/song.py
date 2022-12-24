@@ -4,39 +4,53 @@ from pygame import mixer
 from tkinter import filedialog
 import shutil, os
 
+class song:
+    def __init__(self, name, length, artist, genure, link, status):
+        self.name = name
+        self.length = length
+        if (artist != None):
+            self.artist = artist
+        else: self.artist = "unknown"
+        self.genure = genure
+        self.link = link
+        self.status = status
+    
+    def Load(self, link):
+        mixer.music.load(self)
+
+    def Play(self, status, link):
+        if self.status != "playing":
+            self.statuc = "playing"
+            mixer.music.play() #meeds some while loop to play
+            while True:
+                if mixer.music.get_endevent() == 1:
+                    self.statuc = "played"
+                    break
+    
+    #to pause the song 
+    def Pause():
+        mixer.music.pause()
+
+        
+
+
 #add song(s) to main library
 #use oo
-def addsongs():
+def addsongs(playlsit):
     #to open a file  
     temp_song=filedialog.askopenfilenames(initialdir="Music/",title="Choose a song", filetypes=(("mp3 Files","*.mp3"),))
     ##loop through every item in the list to insert in the listbox
     for i in temp_song:
-        shutil.copy(i, "src\main_list")
+        shutil.copy(i, f"src\{playlsit}")
 
-# delete song from main library
+# delete song from playlist
 #use oo 
-def deletesong(song):
-    if os.path.exists(song):
+def deletesong(self, playlist):
+    if os.path.exists(self.link):
         os.remove(song)
     else:
         print("The file does not exist")
     
-    
-def Play(song):
-    mixer.init()
-    mixer.music.load(song)
-    mixer.music.play() #meeds some while loop to play
-    while True:
-        if mixer.music.get_endevent() == 1:
-            break
-
-
-Play('src/main_list/05. Umbrella.mp3')
-
-
-#to pause the song 
-def Pause():
-    mixer.music.pause()
 
 #to stop the  song 
 def Stop(songs_list):
