@@ -1,5 +1,6 @@
 import songs, player_txt
 from tkinter import filedialog
+import eyed3
 
 class playlist:
 
@@ -12,11 +13,13 @@ class playlist:
     #add song(s) to main library
     def addsongs(playlsit):
         #to open a file  
+        tag = eyed3.Tag()
         temp_song=filedialog.askopenfilenames(initialdir="Desktop/",title="Choose a song", filetypes=(("mp3 Files","*.mp3"),))
         ##loop through every item in the list to insert in the listbox
         for i in temp_song:
-            print(i)
-    
+            tag.link(i)
+            print (tag.getArtist(), tag.getAlbum(), tag.getTitle())
+
     def addSong(self, song):
         self.songs.append(song)
     
