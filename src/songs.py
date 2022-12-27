@@ -23,7 +23,7 @@ class song:
             # while True:
             #     if mixer.music.get_endevent() == 1:
             #         self.status = "paused"
-            #         break
+            #         next()
         elif self.status == "paused":
             mixer.music.unpause()
             self.status = "playing"
