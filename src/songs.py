@@ -1,13 +1,11 @@
 from pygame import mixer
-import player_txt
+import json
 
 class song:
-    def __init__(self, name, length, artist, genure, link):
-        self.name = name
-        self.length = length
-        if (artist != None):
-            self.artist = artist
-        else: self.artist = "unknown"
+    def __init__(self, title, length, artist, genure, link):
+        self.title = title
+        self.length = round(length, 2)
+        self.artist = artist
         self.genure = genure
         self.link = link
         self.status = "not playing"
@@ -30,3 +28,12 @@ class song:
         elif self.status == "playing":
             mixer.music.pause()
             self.status = "paused"
+        
+    def toJSON(self):
+        #convert to dictionary 
+        #return {name: self.name ....}
+
+s = song("one", 10.22, "two", "three", 'four')
+with open("j", 'w') as file_object:
+   json.dump(s, "j")
+
