@@ -1,5 +1,4 @@
 from pygame import mixer
-import json
 
 class song:
     def __init__(self, title, length, artist, genure, link):
@@ -28,12 +27,3 @@ class song:
         elif self.status == "playing":
             mixer.music.pause()
             self.status = "paused"
-        
-    def toJSON(self):
-        #convert to dictionary 
-        #return {name: self.name ....}
-
-s = song("one", 10.22, "two", "three", 'four')
-with open("j", 'w') as file_object:
-   json.dump(s, "j")
-

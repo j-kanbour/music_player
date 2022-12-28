@@ -1,12 +1,11 @@
-import songs, playlists
+import songs, playlists, json
 from pygame import mixer
 from collections import deque
 
-playlists = [] #index 0 = main library
-global currPlaylist
+playLis = [] #index 0 = main library
 songList = deque() #a looping quqeue where first element is curr song, last is previous and next is next
-global currSong
 
+#load all saved playlists and songs
 def openMixer():
     mixer.init()
     #load all songs and playlists from JSON
@@ -17,23 +16,24 @@ def openMixer():
     
     #songlist[0].load()
 
+#saves all playlists and songs to JSON
 def closeMixer():
-    pass
-    #append JSON
-    #JSON.dumps
-        #current song
-        #current song list
-        #all playlists
-            #all songs
+    with open('j', 'w') as file:
+        temp = []
+        for p in playLis:
+            p.toJSON() #converts all songs in playlist to dictionaries
+            temp.append(p.__dict__)
+        file.write(json.dumps(temp, indent=3))
+        file.write(json.dumps(songList))
 
 def newPlaylist(name):
     p = playlists(name)
-    playlists.append(p)
+    playLis.append(p)
 
 def delPlaylist():
     currPlaylist.removeAllSongs()
-    playlists.remove(currPlaylist)
-    currPlaylist = playlists[0]
+    playLis.remove(currPlaylist)
+    currPlaylist = playLis[0]
 
 def next():
     currSong.status = "n/a"
@@ -53,7 +53,7 @@ def getSongList():
     return songList
 
 def getplaylists():
-    return playlists
+    return playLis
 
 def main():
     openMixer()
