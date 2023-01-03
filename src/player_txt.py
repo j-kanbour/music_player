@@ -19,7 +19,7 @@ def openMixer():
     #    data[1] = songlist
     #    len(data[1]) = curr uid
     #    data[2] = songList
-    for p in data[0]:
+    for p in data:
         newPlaylist(p["name"],p["songList"])
     
     fp.close()
