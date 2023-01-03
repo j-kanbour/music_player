@@ -1,6 +1,7 @@
 from pygame import mixer
 
 class song:
+
     def __init__(self, title, length, artist, genure, link):
         self.title = title
         self.length = round(length, 2)
@@ -13,7 +14,7 @@ class song:
         mixer.music.load(self)
         self.status = "loaded"
 
-    def PlayPlay(self):
+    def PlayPause(self):
         if self.status == "loaded":
             self.status = "playing"
             mixer.music.play() #meeds some while loop to play
