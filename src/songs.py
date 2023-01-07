@@ -10,10 +10,15 @@ class song:
         self.link = link
         self.status = "not playing"
     
+    #load song into mixer
     def Load(self):
         mixer.music.load(self)
         self.status = "loaded"
 
+    #song control
+        #play song
+        #pause song
+        #unpause song
     def PlayPause(self):
         if self.status == "loaded":
             self.status = "playing"
