@@ -1,50 +1,64 @@
-import songs, playlists, json
+import songs, playlists, json, os
 from pygame import mixer
 from collections import deque
 import audio_metadata
 from tkinter import filedialog
 
-playLis = [] #index 0 = main library
+playLis = []
 CompleteSongList = {} #contains all uid : song
 songList = deque() #a looping quqeue where first element is curr song, last is previous and next is next
 uid = 0
 
 #load all saved playlists and songs
 def openMixer():
+    global playLis
+    global CompleteSongList
+    global uid
+    global songList
+
     mixer.init()
-    with open('saved_data') as fp:
-        data = json.load(fp)
-    #how to get read different from different lists 
-    #i.e data[0] = playlists
-    #    data[1] = songlist
-    #    len(data[1]) = curr uid
-    #    data[2] = songList
-    for p in data:
-        newPlaylist(p["name"],p["songList"])
-    
-    fp.close()
+
+    if os.path.exists("saved_data") == False:
+        with open('saved_data') as f:
+            json_string = f.read()
+        f.close()
+
+        playLis = json.loads(json_string[0])
+        print(playLis)
+
+        # CompleteSongList = data[1]
+        # uid = len(data[1])
+        # songList = deque(data[2])
 
 #saves all playlists and songs to JSON
 def closeMixer():
     with open('saved_data', 'w') as file:
+        save = []
         temp = []
         for p in playLis:
             temp.append(p.__dict__)
-        file.write(json.dumps(temp, indent=2))
+        save.append(temp) # save[0] = playlists
+
+        # for s in CompleteSongList.values:
+        #     temp.append(s.__dict__)
+        # save.append(temp)    #save[1] = CompleteSongList
+        save.append([list(songList)]) #save[2] = songList
+        file.write(json.dumps(save, indent=2))
+    
+    #clear existing data
     playLis.clear()
     CompleteSongList.clear()
     songList.clear()
     file.close()
 
-def newPlaylist(name, songs = None):
+def newPlaylist(name):
     p = playlists.playlist(name)
     playLis.append(p)
-    if songs != None:
-        for s in songs:
-            p.addSong(s)
 
 #add song(s) to main library
-def newSongs(self):
+def newSongs():
+    global uid
+    global CompleteSongList
     #to open a file  
     temp_song=filedialog.askopenfilenames(initialdir="Desktop/",title="Choose a song", filetypes=(("mp3 Files","*.mp3"),))
     ##loop through every item in the list to insert in the listbox
@@ -58,7 +72,6 @@ def newSongs(self):
         
         uid = uid + 1
         CompleteSongList[uid] = s 
-        playLis[0].addSong(uid)
 
 def next():
     currSong.status = "n/a"
