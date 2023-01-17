@@ -1,4 +1,4 @@
-import songs, playlists, pickle, os
+import songs, playlists, pickle, os, sort, search
 from pygame import mixer
 from collections import deque
 import audio_metadata
@@ -7,11 +7,12 @@ from tkinter import filedialog
 playListList = []
 CompleteSongList = {} #contains all uid : song
 songList = deque() #a looping quqeue where first element is curr song, last is previous and next is next
+currplaylist = None
 uid = 0
 
 #load all saved playlists and songs
 def openMixer():
-    global playListList, CompleteSongList, uid, songList
+    global playListList, CompleteSongList, uid, songList, currplaylist
 
     mixer.init()
 
@@ -20,6 +21,7 @@ def openMixer():
             playListList = pickle.load(f)
             CompleteSongList = pickle.load(f)
             songList = pickle.load(f)
+            currplaylist = None
         f.close()
         uid = len(CompleteSongList)
 
@@ -42,8 +44,11 @@ def closeMixer():
 
 #make a new playlist
 def newPlaylist(name):
+    global currplaylist
+
     p = playlists.playlist(name)
     playListList.append(p)
+    currplaylist = p
 
 #add song(s) to main library
 def newSongs():
@@ -77,13 +82,21 @@ def loadPlaylist(pl):
     for i in pl.getSongs():
         songList.append(CompleteSongList[i])
 
+def observePLaylist():
+    global currplaylist
+    #search for playlist name in playlistlist
+    currplaylist = None #currplaylist = searched playlist
+    
 #adds all songs in library to current songList
 def loadMainList():
+    global currplaylist
+    currplaylist = None
+
     songList.clear()
     for i in CompleteSongList.values:
         songList.append(i)
 
-#load an dplay next song
+#load and play next song
 def next():
     global songList
     currSong.status = "n/a"
@@ -112,7 +125,8 @@ def controller():
         #song actions
         if action == "help":
             print(
-            "SONG OPTIONS\n\
+            "quit --> closes music player\n\
+            \nSONG OPTIONS\n\
             'add songs' --> allows you to add songs to main library\n\
             'play' --> plays current song\n\
             'pause' --> pauses current song\n\
@@ -125,16 +139,14 @@ def controller():
             'rename playlist' --> rename playlist\n\
             'search song' --> allows you to search for a song in the current playlist\n\
             'sort songs' --> allows you to sort songs in the current playlsit by one of the following:\n\
-                       - alphabetical(A-Z)\n\
-                       - alphabetical(Z-A)\n\
-                       - length(max-min)\n\
-                       - length(min-max)\n\
-                       - genre(A-Z)\n\
-                       - genre(Z-A)\n\
-                       - artist(A-Z)\n\
-                       - artist(Z-A)\n\
-            ")rch song' --> allows you to search for a song in the current playlist\n\
-            ")
+                       1 - alphabetical(A-Z)\n\
+                       2 - alphabetical(Z-A)\n\
+                       3 - length(max-min)\n\
+                       4 - length(min-max)\n\
+                       5 - genre(A-Z)\n\
+                       6 - genre(Z-A)\n\
+                       7 - artist(A-Z)\n\
+                       8 - artist(Z-A)\n")
         if action == "play":
             songList[0].load()
             songList[0].PlayPause()
@@ -144,8 +156,17 @@ def controller():
             next()
         elif action == "previous":
             previous()
-
-        if action == "new playlsit":
+        elif action == "new playlsit":
             name = input("input playlist name: ")
             newPlaylist(name)
-            #prompt for name
+        elif action == "load playlist":
+            loadPlaylist(currplaylist)
+        elif action == "sort":
+            opt = input("select sort option (see 'help' for options): ")
+            sort(currplaylist, opt)
+        elif action == "search":
+            opt = input(": ")
+            search(currplaylist, opt)
+
+
+    closeMixer()
