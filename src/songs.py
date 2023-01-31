@@ -14,6 +14,12 @@ class song:
     def Load(self):
         mixer.music.load(self)
         self.status = "loaded"
+    
+    def getname(self):
+        return self.title
+    
+    def getartist(self):
+        return self.artist
 
     #song control
         #play song

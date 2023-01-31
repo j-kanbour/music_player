@@ -24,10 +24,8 @@ def openMixer():
             currplaylist = None
         f.close()
         uid = len(CompleteSongList)
-
     else:
-        #provide instructions for first time users
-        pass
+        help()
 
 #saves all playListListts and songs to file
 def closeMixer():
@@ -81,19 +79,14 @@ def loadPlaylist(pl):
     songList.clear()
     for i in pl.getSongs():
         songList.append(CompleteSongList[i])
-
-def observePLaylist():
-    global currplaylist
-    #search for playlist name in playlistlist
-    currplaylist = None #currplaylist = searched playlist
     
 #adds all songs in library to current songList
 def loadMainList():
-    global currplaylist
+    global currplaylist, CompleteSongList
     currplaylist = None
 
     songList.clear()
-    for i in CompleteSongList.values:
+    for i in CompleteSongList.values():
         songList.append(i)
 
 #load and play next song
@@ -114,20 +107,12 @@ def previous():
     currSong.Load()
     currSong.PlayPause()
 
-def controller():
-    global songList
-
-    openMixer()
-
-    action = None
-    while action != "quit":
-        action = input("enter action (type 'help' for possible actions): ")
-        #song actions
-        if action == "help":
-            print(
+def help():
+    print(
             "quit --> closes music player\n\
             \nSONG OPTIONS\n\
             'add songs' --> allows you to add songs to main library\n\
+            'song list' --> displays songs in current play\n\
             'play' --> plays current song\n\
             'pause' --> pauses current song\n\
             'next' --> plays next song\n\
@@ -135,7 +120,10 @@ def controller():
             \nPLAYLIST OPTIONS\n\
             'new playlist' --> creats a new playlist\n\
             'add to playlist' --> allows you to add the current song to any playlist\n\
-            'load playlist' --> plays songs in playlist\n\
+            'playlist selelct' --> plays songs in playlist\n\
+            'view playlist' --> shows songs in selected playlist\n\
+            'load selected playlist' --> loads songs from selected playlist\n\
+            'load main playlist' --> loads all songs in library\n\
             'rename playlist' --> rename playlist\n\
             'search song' --> allows you to search for a song in the current playlist\n\
             'sort songs' --> allows you to sort songs in the current playlsit by one of the following:\n\
@@ -147,26 +135,59 @@ def controller():
                        6 - genre(Z-A)\n\
                        7 - artist(A-Z)\n\
                        8 - artist(Z-A)\n")
-        if action == "play":
-            songList[0].load()
-            songList[0].PlayPause()
-        elif action == "pause":
-            songList[0].PlayPause()
-        elif action == "next":
-            next()
-        elif action == "previous":
-            previous()
-        elif action == "new playlsit":
-            name = input("input playlist name: ")
-            newPlaylist(name)
-        elif action == "load playlist":
-            loadPlaylist(currplaylist)
-        elif action == "sort":
-            opt = input("select sort option (see 'help' for options): ")
-            sort(currplaylist, opt)
-        elif action == "search":
-            opt = input(": ")
-            search(currplaylist, opt)
 
+def controller():
+    global songList, currplaylist, songList
+
+    openMixer()
+
+    action = None
+    while action != "quit":
+        action = input("enter action (type 'help' for possible actions): ")
+        #song actions
+        match action:
+            case "help":
+                help()
+            case "add songs":
+                newSongs()
+            case "song list":
+                for i in range(len(songList)):
+                    print(f"{i+1} {songList[i].getname()} by {songList[i].getartist()}\n")
+            case "play":
+                songList[0].load()
+                songList[0].PlayPause()
+            case "pause":
+                songList[0].PlayPause()
+            case "next":
+                next()
+            case "previous":
+                previous()
+            case "new playlist":
+                name = input("input playlist name: ")
+                newPlaylist(name)
+            case "playlist select":
+                for i in range(len(playListList)):
+                    print(f"{i+1} {playListList[i]}\n")
+                selected = int(input("select playlist number: "))
+                currplaylist = playListList[selected]
+            case "load selected playlist":
+                loadPlaylist(currplaylist)
+            case "load main playlist":
+                loadMainList()
+            case "add to playlist":
+                for i in range(len(playListList)):
+                    print(f"{i+1} {playListList[i]}\n")
+                selected = int(input("select playlist number: "))
+                playListList[selected].addSong(songList[0])
+            case "view playlist":
+                currplaylist.observe()
+            case "sort":
+                opt = input("select sort option (see 'help' for options): ")
+                sort(currplaylist, opt)
+            case "search":
+                opt = input(": ")
+                search(currplaylist, opt)
 
     closeMixer()
+
+controller()

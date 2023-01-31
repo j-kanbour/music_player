@@ -16,6 +16,10 @@ class playlist:
     def getSongs(self):
         return self.songList
     
+    def observe(self):
+        for i in range(len(self.songList)):
+            print(f"{i+1} {self.songList[i]}\n")
+    
     #rename playlist
     def rename(self, newName):
         if self.name == "main":
