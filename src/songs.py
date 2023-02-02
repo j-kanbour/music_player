@@ -12,7 +12,7 @@ class song:
     
     #load song into mixer
     def Load(self):
-        mixer.music.load(self)
+        mixer.music.load(self.link)
         self.status = "loaded"
     
     def getname(self):
@@ -20,6 +20,9 @@ class song:
     
     def getartist(self):
         return self.artist
+    
+    def resetstatus(self):
+        self.status = "not playing"
 
     #song control
         #play song
@@ -28,11 +31,7 @@ class song:
     def PlayPause(self):
         if self.status == "loaded":
             self.status = "playing"
-            mixer.music.play() #meeds some while loop to play
-            # while True:
-            #     if mixer.music.get_endevent() == 1:
-            #         self.status = "paused"
-            #         next()
+            mixer.music.play()
         elif self.status == "paused":
             mixer.music.unpause()
             self.status = "playing"

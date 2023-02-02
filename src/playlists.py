@@ -18,7 +18,10 @@ class playlist:
     
     def observe(self):
         for i in range(len(self.songList)):
-            print(f"{i+1} {self.songList[i]}\n")
+            print(f"{i+1} {self.songList[i].getname()} by {self.songList[i].getname()}\n")
+    
+    def getname(self):
+        return self.name
     
     #rename playlist
     def rename(self, newName):

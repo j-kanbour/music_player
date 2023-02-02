@@ -29,6 +29,8 @@ def openMixer():
 
 #saves all playListListts and songs to file
 def closeMixer():
+    songList[0].resetstatus()
+    
     with open('saved_data', 'wb') as file:
         pickle.dump(playListList, file)
         pickle.dump(CompleteSongList, file)
@@ -92,7 +94,7 @@ def loadMainList():
 #load and play next song
 def next():
     global songList
-    currSong.status = "n/a"
+    songList[0].resetstatus()
     songList.rotate(-1)
     currSong = songList[0]
     currSong.Load()
@@ -101,11 +103,10 @@ def next():
 #load and play previous song
 def previous():
     global songList
-    currSong.status = "n/a"
+    songList[0].resetstatus()
     songList.rotate(1)
-    currSong = songList[0]
-    currSong.Load()
-    currSong.PlayPause()
+    songList[0].Load()
+    songList[0].PlayPause()
 
 def help():
     print(
@@ -154,22 +155,29 @@ def controller():
                 for i in range(len(songList)):
                     print(f"{i+1} {songList[i].getname()} by {songList[i].getartist()}\n")
             case "play":
-                songList[0].load()
+                songList[0].Load()
                 songList[0].PlayPause()
+                print(f"playing: {songList[0].getname()}")
             case "pause":
                 songList[0].PlayPause()
             case "next":
+                print(f"playing: {songList[0].getname()}")
                 next()
             case "previous":
+                print(f"playing: {songList[0].getname()}")
                 previous()
             case "new playlist":
                 name = input("input playlist name: ")
                 newPlaylist(name)
             case "playlist select":
                 for i in range(len(playListList)):
-                    print(f"{i+1} {playListList[i]}\n")
-                selected = int(input("select playlist number: "))
-                currplaylist = playListList[selected]
+                    print(f"{i+1} {playListList[i].getname()}\n")
+                
+                try: 
+                    selected = int(input("select playlist number: "))
+                    currplaylist = playListList[selected-1]
+                except: 
+                    print("enter valid number")
             case "load selected playlist":
                 loadPlaylist(currplaylist)
             case "load main playlist":
