@@ -75,12 +75,14 @@ def newSongs():
         uid = uid + 1
         CompleteSongList[uid] = s 
 
+def getsong(uid):
+    return CompleteSongList[uid]
+
 #adds all songs in playlist to current songList
 def loadPlaylist(pl):
     global songList, CompleteSongList
     songList.clear()
-    for i in pl.getSongs():
-        songList.append(CompleteSongList[i])
+    songList = deque(pl.getSongs())
     
 #adds all songs in library to current songList
 def loadMainList():
@@ -121,10 +123,9 @@ def help():
             \nPLAYLIST OPTIONS\n\
             'new playlist' --> creats a new playlist\n\
             'add to playlist' --> allows you to add the current song to any playlist\n\
-            'playlist selelct' --> plays songs in playlist\n\
             'view playlist' --> shows songs in selected playlist\n\
-            'load selected playlist' --> loads songs from selected playlist\n\
-            'load main playlist' --> loads all songs in library\n\
+            'load playlist' --> loads songs from selected playlist\n\
+            'load main' --> loads all songs in library\n\
             'rename playlist' --> rename playlist\n\
             'search song' --> allows you to search for a song in the current playlist\n\
             'sort songs' --> allows you to sort songs in the current playlsit by one of the following:\n\
@@ -169,7 +170,7 @@ def controller():
             case "new playlist":
                 name = input("input playlist name: ")
                 newPlaylist(name)
-            case "playlist select":
+            case "load playlist":
                 for i in range(len(playListList)):
                     print(f"{i+1} {playListList[i].getname()}\n")
                 
@@ -178,16 +179,26 @@ def controller():
                     currplaylist = playListList[selected-1]
                 except: 
                     print("enter valid number")
-            case "load selected playlist":
                 loadPlaylist(currplaylist)
-            case "load main playlist":
+            case "load main":
                 loadMainList()
             case "add to playlist":
                 for i in range(len(playListList)):
-                    print(f"{i+1} {playListList[i]}\n")
-                selected = int(input("select playlist number: "))
-                playListList[selected].addSong(songList[0])
+                    print(f"{i+1} {playListList[i].getname()}\n")
+                try: 
+                    selected = int(input("select playlist number: "))
+                    currplaylist = playListList[selected-1]
+                except: 
+                    print("enter valid number")
+                currplaylist.addSong(songList[0])
             case "view playlist":
+                for i in range(len(playListList)):
+                    print(f"{i+1} {playListList[i].getname()}\n")
+                try: 
+                    selected = int(input("select playlist number: "))
+                    currplaylist = playListList[selected-1]
+                except: 
+                    print("enter valid number")
                 currplaylist.observe()
             case "sort":
                 opt = input("select sort option (see 'help' for options): ")
