@@ -2,6 +2,7 @@
 #need to work on function
 from pygame import mixer
 import pygame
+import player_txt as pt
 from tkinter import *
 import tkinter.font as font
 from tkinter import filedialog
@@ -21,7 +22,7 @@ songs_list.grid(columnspan=9)
 defined_font = font.Font(family='Helvetica')
 
 #play button
-play_button=Button(root,text="Play",width =7,command=songs.Play(songs_list))
+play_button=Button(root,text="Play",width =7,command=pt.Play(songs_list))
 play_button['font']=defined_font
 play_button.grid(row=1,column=0)
 
