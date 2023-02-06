@@ -29,12 +29,13 @@ class song:
         #pause song
         #unpause song
     def PlayPause(self):
-        if self.status == "loaded":
-            self.status = "playing"
-            mixer.music.play()
-        elif self.status == "paused":
-            mixer.music.unpause()
-            self.status = "playing"
-        elif self.status == "playing":
-            mixer.music.pause()
-            self.status = "paused"
+        match self.status:
+            case "loaded":
+                self.status = "playing"
+                mixer.music.play()
+            case "paused":
+                mixer.music.unpause()
+                self.status = "playing"
+            case "playing":
+                mixer.music.pause()
+                self.status = "paused"
