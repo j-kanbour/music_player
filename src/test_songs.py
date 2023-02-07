@@ -1,4 +1,4 @@
-import player_txt, os
+import controller, os
 
 def test_jsonsaveload():
     if os.path.exists("saved_data") == True:

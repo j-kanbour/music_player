@@ -1,4 +1,4 @@
-import songs, playlists, pickle, os, sort, search
+import songs, playlists, pickle, os
 from pygame import mixer
 from collections import deque
 import audio_metadata
@@ -28,8 +28,6 @@ def openMixer():
             currplaylist = None
         f.close()
         uid = len(CompleteSongList)
-    else:
-        help()
 
 #saves all playListListts and songs to file
 def closeMixer():
@@ -160,19 +158,6 @@ def removefromPlaylist(pl):
     try:
         pl.removeSong(songList[0])
     except IndexError: pass
-
-# def playlistoptions():
-#     for i in range(len(playListList)):
-#         print(f"{i+1} {playListList[i].getname()}\n")
-    
-#     try: 
-#         selected = int(input("select playlist number: "))
-#         currplaylist = playListList[selected-1]
-#     except: 
-#         print("enter valid number")
-    
-#     return currplaylist
-
 
 # def help():
 #     print(
