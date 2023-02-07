@@ -134,8 +134,11 @@ def newPlaylist(name):
 #adds all songs in playlist to current songList
 def loadPlaylist(pl):
     global songList
-    songList.clear()
-    songList = deque(pl.getSongs())
+    for i in playListList:
+        if i.getname == pl: 
+            songList.clear()
+            songList = deque(i.getSongs())
+            break
     
 #adds all songs in library to current songList
 def loadMainList():

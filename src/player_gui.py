@@ -1,4 +1,4 @@
-import controller, songs
+import controller
 from tkinter import *
 import tkinter.font as font
 
@@ -25,6 +25,28 @@ def updatelist(displaylist):
 
 #font is defined which is to be used for the button font 
 defined_font = font.Font(family='Helvetica')
+
+#user input
+def newPlay():  
+    name_var=StringVar()
+
+    top = Toplevel(root)
+    top.geometry("400x250")
+    top.title("Playlist")
+    Label(top, text= "Enter playlist name").place(x=150,y=50)
+
+    Entry(top, textvariable = name_var).place(x=100,y=100)
+
+    Button(top,text="Enter", width=5, 
+    command=lambda:[controller.newPlaylist(name_var.get()),top.destroy()]).place(x=150,y=150)
+
+def select():
+    print("hh")
+    updatelist(controller.playListList)
+    ##return songs_list.curselection()
+
+#TODO
+#merge the play pause and unpause button into one
 
 #play button
 play_button=Button(root,text="Play",width =7,command=lambda:[controller.play(), updatelist(controller.songList)])
@@ -70,11 +92,11 @@ song_menu.add_command(label="Load all songs", command=lambda:[controller.loadMai
 #playlist Menu
 playlist_menu=Menu(menuebar)
 menuebar.add_cascade(label="Playlists",menu=playlist_menu)
-playlist_menu.add_command(label="New PLaylist",command=controller.newPlaylist)
-playlist_menu.add_command(label="Delete Playlist",command=controller.deletePlaylist)
+playlist_menu.add_command(label="New Playlist",command=newPlay)
+#playlist_menu.add_command(label="Delete Playlist",command=controller.deletePlaylist)
 playlist_menu.add_command(label="add song to playlist", command=controller.addtoPlaylist)
 playlist_menu.add_command(label="remove song from playlist", command=controller.removefromPlaylist)
-playlist_menu.add_command(label="load playlist", command=lambda:[controller.loadPlaylist(), updatelist(controller.playListList)])
+playlist_menu.add_command(label="load playlist", command=controller.loadPlaylist("ll"))
 
 controller.openMixer()
 updatelist(controller.songList)
