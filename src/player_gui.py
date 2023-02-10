@@ -2,6 +2,8 @@ import controller
 from tkinter import *
 import tkinter.font as font
 
+selelcted = None
+
 #creating the root window 
 root=Tk()
 root.title('Music app')
@@ -41,9 +43,9 @@ def newPlay():
     command=lambda:[controller.newPlaylist(name_var.get()),top.destroy()]).place(x=150,y=150)
 
 def select():
-    print("hh")
-    updatelist(controller.playListList)
-    ##return songs_list.curselection()
+    global selected
+    selected = songs_list.curselection()[0]
+    
 
 #TODO
 #merge the play pause and unpause button into one
@@ -58,25 +60,25 @@ pause_button=Button(root,text="Pause",width =7,command=controller.pause)
 pause_button['font']=defined_font
 pause_button.grid(row=1,column=1)
 
-#stop button
-stop_button=Button(root,text="Stop",width =7,command=print("heh"))
-stop_button['font']=defined_font
-stop_button.grid(row=1,column=2)
-
 #resume button
 Resume_button=Button(root,text="Resume",width =7,command=controller.unpause)
 Resume_button['font']=defined_font
-Resume_button.grid(row=1,column=3)
+Resume_button.grid(row=1,column=2)
 
 #previous button
 previous_button=Button(root,text="Prev",width =7,command=lambda:[controller.previous(), updatelist(controller.songList)])
 previous_button['font']=defined_font
-previous_button.grid(row=1,column=4)
+previous_button.grid(row=1,column=3)
 
 #nextbutton
 next_button=Button(root,text="Next",width =7,command=lambda:[controller.next(), updatelist(controller.songList)])
 next_button['font']=defined_font
-next_button.grid(row=1,column=5)
+next_button.grid(row=1,column=4)
+
+#Select button
+stop_button=Button(root,text="Select",width =7,command=lambda:[select(),controller.loadPlaylist(selected), updatelist(controller.songList)])
+stop_button['font']=defined_font
+stop_button.grid(row=1,column=5)
 
 #menus 
 menuebar=Menu(root)
@@ -96,7 +98,7 @@ playlist_menu.add_command(label="New Playlist",command=newPlay)
 #playlist_menu.add_command(label="Delete Playlist",command=controller.deletePlaylist)
 playlist_menu.add_command(label="add song to playlist", command=controller.addtoPlaylist)
 playlist_menu.add_command(label="remove song from playlist", command=controller.removefromPlaylist)
-playlist_menu.add_command(label="load playlist", command=controller.loadPlaylist("ll"))
+playlist_menu.add_command(label="load playlist", command=lambda:[updatelist(controller.playListList)])
 
 controller.openMixer()
 updatelist(controller.songList)
