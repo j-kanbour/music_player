@@ -11,7 +11,7 @@ currplaylist = None
 uid = 0
 
 """
-    Open/close app functions
+    Open/close app functions, works
 """
 
 #load all saved playlists and songs
